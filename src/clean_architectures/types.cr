@@ -1,3 +1,5 @@
+require "http/status"
+
 module CA
-  alias ConfigValue = String | Int32 | Float32 | Bool
+  alias ConfigValue = Int32 | Float32 | Bool | String
 end

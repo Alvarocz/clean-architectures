@@ -3,7 +3,7 @@ module CA
     property left : L?
     property right : R?
 
-    def initialize(@left : L?, @right : R?)
+    def initialize(@left, @right)
       raise ArgumentError.new "Must provide either left of right" if @left.nil? && @right.nil?
     end
 
@@ -19,11 +19,11 @@ module CA
       instance
     end
 
-    def is_left
+    def left?
       !@left.nil?
     end
 
-    def is_right
+    def right?
       !@right.nil?
     end
 
@@ -36,7 +36,7 @@ module CA
     end
 
     def either(on_left, on_right)
-      if self.is_left
+      if left?
         return on_left(@left)
       else
         return on_right(@right)
@@ -44,7 +44,7 @@ module CA
     end
 
     def bind(func : _ -> Either(L, R))
-      if self.is_left
+      if left?
         return Either.new(@left, nil)
       else
         return func(@right)
