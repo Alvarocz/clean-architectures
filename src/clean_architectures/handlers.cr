@@ -24,7 +24,7 @@ module CA
       end
       context.response << error_body.to_json
       context.response.status = HTTP::Status::BAD_REQUEST
-      context.response.content_type = "application/json"
+      context.response.content_type = "application/json; charset=UTF-8"
       context
     end
   end

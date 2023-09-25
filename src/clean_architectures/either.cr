@@ -1,5 +1,5 @@
 module CA
-  class Either(L, R)
+  struct Either(L, R)
     property left : L?
     property right : R?
 
@@ -8,14 +8,12 @@ module CA
     end
 
     def self.from_success(value : R)
-      instance = Either.allocate
-      instance.initialize(nil, value)
+      instance = Either(L, R).new(value, nil)
       instance
     end
 
     def self.from_error(value : L)
-      instance = Either.allocate
-      instance.initialize(value, nil)
+      instance = Either(L, R).new(nil, value)
       instance
     end
 
@@ -27,14 +25,6 @@ module CA
       !@right.nil?
     end
 
-    def success
-      @right
-    end
-
-    def error
-      @left
-    end
-
     def either(on_left, on_right)
       if left?
         return on_left(@left)
@@ -43,9 +33,9 @@ module CA
       end
     end
 
-    def bind(func : _ -> Either(L, R))
+    def bind(func)
       if left?
-        return Either.new(@left, nil)
+        return Either(L, R).new(@left, nil)
       else
         return func(@right)
       end
