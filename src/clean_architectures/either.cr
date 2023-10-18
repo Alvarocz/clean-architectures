@@ -8,12 +8,12 @@ module CA
     end
 
     def self.from_success(value : R)
-      instance = Either(L, R).new(value, nil)
+      instance = Either(L, R).new(nil, value)
       instance
     end
 
     def self.from_error(value : L)
-      instance = Either(L, R).new(nil, value)
+      instance = Either(L, R).new(value, nil)
       instance
     end
 
@@ -26,19 +26,11 @@ module CA
     end
 
     def either(on_left, on_right)
-      if left?
-        return on_left(@left)
-      else
-        return on_right(@right)
-      end
+      left? ? on_left(@left) : on_right(@right)
     end
 
     def bind(func)
-      if left?
-        return Either(L, R).new(@left, nil)
-      else
-        return func(@right)
-      end
+      left? ? Either(L, R).new(@left, nil) : func(@right)
     end
   end
 end

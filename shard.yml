@@ -5,12 +5,10 @@ authors:
   - Alvarocz <alvaroczxp@gmail.com>
 
 description: |
-  Base library that provides classes to create web APIs using clean architectures pattern
+  Base functionality and abstractions for a clean architectures implementation
 
-dependencies:
-  grip:
-    github: grip-framework/grip
-
+# dependencies:
+# 
 # development_dependencies:
 #   webmock:
 #     github: manastech/webmock.cr

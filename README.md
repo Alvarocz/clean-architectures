@@ -1,2 +1,2 @@
 # clean-architectures
-Clean architectures implemented in Crystal lang using Grip as web framework
+Base functionality and abstractions for a clean architectures implementation

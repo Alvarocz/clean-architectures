@@ -9,11 +9,7 @@ module CA
     property status_code : HTTP::Status
 
     def initialize(body : String | ErrorBody, @status_code)
-      if body.is_a?(String)
-        @body = {"message" => JSON::Any.new(message)}
-      else
-        @body = body
-      end
+      @body = body.is_a?(String) ? {"message" => JSON::Any.new(body)} : body
     end
 
     def self.simple_message(message : String)

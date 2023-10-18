@@ -5,12 +5,10 @@ require "./error"
 require "./types"
 
 module CA
-  class Service(Request,Result)
-    abstract def validate(request : Request) : Either(Error, Bool)
-    end
+  abstract class Service(Request, Result)
+    abstract def validate(request : Request)
 
-    abstract def execute(request : Request) : Either(Error, Result)
-    end
+    abstract def execute(request : Request)
 
     def call(request : Request) : Either(Error, Result)
       Either(Error, Request).from_success(request)
