@@ -4,6 +4,11 @@ require "./either"
 require "./error"
 require "./types"
 
+class AssertionError < Exception
+  def initialize(body : String | ErrorBody, status : HTTP::Status)
+  end
+end
+
 module CA
   abstract class Service(Request, Result)
     abstract def validate(request : Request)
@@ -17,14 +22,22 @@ module CA
     end
 
     def run_validation(request : Request) : Either(Error, Request)
-      response = self.validate(request)
-      if response.right?
+      response = validate(request)
+      if response.nil?
         return Either(Error, Request).from_success(request, nil)
       end
       response
+    rescue exc : AssertionError
+      error(exc.body, exc.status)
     end
 
     # Validation step
+    def assert(assertion, body : String | ErrorBody, status : HTTP::Status)
+      if !assertion
+        raise AssertionError.new(body, status)
+      end
+    end
+
     def ok
       Either(Error, Bool).from_success(true)
     end
