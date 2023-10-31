@@ -4,29 +4,26 @@ require "./either"
 require "./error"
 require "./types"
 
-class AssertionError < Exception
-  def initialize(body : String | ErrorBody, status : HTTP::Status)
-  end
-end
-
 module CA
+  class AssertionError < Exception
+    property body : String | ErrorBody
+    property status : HTTP::Status
+
+    def initialize(@body, @status)
+    end
+  end
+
   abstract class Service(Request, Result)
     abstract def validate(request : Request)
 
     abstract def execute(request : Request)
 
-    def call(request : Request) : Either(Error, Result)
-      Either(Error, Request).from_success(request)
-        .bind(run_validation)
-        .bind(execute)
-    end
-
-    def run_validation(request : Request) : Either(Error, Request)
-      response = validate(request)
-      if response.nil?
-        return Either(Error, Request).from_success(request, nil)
+    def call(request : Request)
+      validation = validate(request)
+      if !validation.nil?
+        return validation
       end
-      response
+      execute(request)
     rescue exc : AssertionError
       error(exc.body, exc.status)
     end

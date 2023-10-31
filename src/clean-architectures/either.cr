@@ -29,8 +29,8 @@ module CA
       left? ? on_left(@left) : on_right(@right)
     end
 
-    def bind(func)
-      left? ? Either(L, R).new(@left, nil) : func(@right)
+    def bind(proc)
+      left? ? self : proc.call(@right.not_nil!)
     end
   end
 end
