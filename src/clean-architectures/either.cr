@@ -8,12 +8,12 @@ module CA
     end
 
     def self.from_success(value : R)
-      instance = Either(L, R).new(nil, value)
+      instance = Either(L, R).new(nil, value.as?(R?))
       instance
     end
 
     def self.from_error(value : L)
-      instance = Either(L, R).new(value, nil)
+      instance = Either(L, R).new(value.as?(L?), nil)
       instance
     end
 
