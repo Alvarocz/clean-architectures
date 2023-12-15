@@ -36,16 +36,16 @@ module CA
     end
 
     def ok
-      Either(Error, Bool).from_success(true)
+      Right.new(true)
     end
 
     # Execute step
     def success(value : Result)
-      Either(Error, Result).from_success(value)
+      Right.new(value)
     end
 
     def error(body : String | ErrorBody, status : HTTP::Status)
-      Either(Error, Result).from_error(Error.new(body, status))
+      Left.new(Error.new(body, status))
     end
   end
 end

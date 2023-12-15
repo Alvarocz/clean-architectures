@@ -1,36 +1,31 @@
 module CA
-  struct Either(L, R)
-    property left : L?
-    property right : R?
+  struct Left(L)
+    property value : L
 
-    def initialize(@left, @right)
-      raise ArgumentError.new "Must provide either left of right" if @left.nil? && @right.nil?
+    def initialize(@value)
     end
 
-    def self.from_success(value : R)
-      instance = Either(L, R).new(nil, value.as?(R?))
-      instance
+    def is_left?
+      true
     end
 
-    def self.from_error(value : L)
-      instance = Either(L, R).new(value.as?(L?), nil)
-      instance
+    def is_right?
+      false
+    end
+  end
+
+  struct Right(R)
+    property value : R
+
+    def initialize(@value)
     end
 
-    def left?
-      !@left.nil?
+    def is_left?
+      false
     end
 
-    def right?
-      !@right.nil?
-    end
-
-    def either(on_left, on_right)
-      left? ? on_left(@left) : on_right(@right)
-    end
-
-    def bind(proc)
-      left? ? self : proc.call(@right.not_nil!)
+    def is_right?
+      true
     end
   end
 end
